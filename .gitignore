@@ -48,3 +48,6 @@ runs/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Demo / runtime output
+output/

@@ -9,6 +9,7 @@
 ultralytics>=8.3.0          # YOLO11n model + Ultralytics inference engine
 opencv-python>=4.9.0        # Frame reading, drawing, video I/O
 numpy>=1.26.0               # Array operations
+scipy>=1.13.0               # Connected-component labelling (thermal_detection)
 
 # ------------------------------------------------------------
 # Testing

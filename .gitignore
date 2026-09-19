@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# YOLO / model weights (large binary files — store separately)
+models/*.pt
+models/*.onnx
+models/*.engine
+*.pt
+*.onnx
+
+# Test / coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Ultralytics run artefacts
+runs/
+
+# Jupyter
+.ipynb_checkpoints/

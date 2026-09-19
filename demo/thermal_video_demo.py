@@ -39,7 +39,10 @@ from src.thermal_detection.exceptions import (
     ThermalInvalidFrameError,
     ThermalModelLoadError,
 )
-from src.thermal_detection.visualization import draw_thermal_detections
+from src.thermal_detection.visualization import (
+    draw_thermal_detections,
+    draw_hotspots,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -259,6 +262,16 @@ def parse_arguments() -> argparse.Namespace:
         help="Enable debug mode in ThermalDetectorConfig.",
     )
     parser.add_argument(
+        "--hotspots",
+        action="store_true",
+        help="Enable thermal hotspot segmentation.",
+    )
+    parser.add_argument(
+        "--all-classes",
+        action="store_true",
+        help="Allow all COCO classes instead of filtering to people/vehicles.",
+    )
+    parser.add_argument(
         "--print-interval",
         type=int,
         default=15,
@@ -390,12 +403,17 @@ def run_demo() -> int:
 
     t_load_start = time.perf_counter()
     try:
-        config = ThermalDetectorConfig(
-            model_path=model_path,
-            confidence_threshold=args.confidence,
-            device=args.device,
-            debug=args.debug,
-        )
+        config_kwargs = {
+            "model_path": model_path,
+            "confidence_threshold": args.confidence,
+            "device": args.device,
+            "debug": args.debug,
+            "enable_hotspot_segmentation": args.hotspots,
+        }
+        if args.all_classes:
+            config_kwargs["allowed_classes"] = None
+
+        config = ThermalDetectorConfig(**config_kwargs)
         detector = ThermalDetector(config)
     except (ThermalModelLoadError, Exception) as exc:
         print(f"\n[ERROR] Failed to initialize ThermalDetector: {exc}\n", file=sys.stderr)
@@ -476,8 +494,12 @@ def run_demo() -> int:
             # 6. Thermal Engine Detection (Calling existing detector.detect())
             # ---------------------------------------------------------------
             t_infer_0 = time.perf_counter()
+            hotspots = []
             try:
-                detections: list[ThermalDetection] = detector.detect(frame)
+                if args.hotspots:
+                    detections, hotspots = detector.detect_with_hotspots(frame)
+                else:
+                    detections = detector.detect(frame)
             except (ThermalInvalidFrameError, ThermalInferenceError) as err:
                 logger.warning("Frame %d detection error: %s", frame_idx, err)
                 detections = []
@@ -516,6 +538,8 @@ def run_demo() -> int:
             # 8. Visualization (Reusing existing draw_thermal_detections)
             # ---------------------------------------------------------------
             annotated_frame = draw_thermal_detections(frame, detections)
+            if hotspots:
+                annotated_frame = draw_hotspots(annotated_frame, hotspots)
 
             # Add HUD Overlay
             annotated_frame = draw_hud_overlay(

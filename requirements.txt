@@ -1,26 +1,18 @@
-# ============================================================
-# AI-Based Intelligent Video Analytics Platform
-# Border Surveillance — Detection Module Requirements
-# ============================================================
-
-# ------------------------------------------------------------
 # Core detection dependencies (CURRENTLY IMPLEMENTED)
-# ------------------------------------------------------------
+
 ultralytics>=8.3.0          # YOLO11n model + Ultralytics inference engine
 opencv-python>=4.9.0        # Frame reading, drawing, video I/O
+                            # (use opencv-python-headless on servers without GUI)
 numpy>=1.26.0               # Array operations
-scipy>=1.13.0               # Connected-component labelling (thermal_detection)
+torch>=2.2.0                # Device auto-detection (CUDA / MPS) + model inference
+                            # For GPU: pip install torch --index-url https://download.pytorch.org/whl/cu121
 
-# ------------------------------------------------------------
-# Testing
-# ------------------------------------------------------------
+# Testing 
 pytest>=8.0.0
 pytest-cov>=5.0.0           # Coverage reporting
 
-# ------------------------------------------------------------
 # Future module dependencies (NOT YET IMPLEMENTED)
 # Install when the respective modules are built.
-# ------------------------------------------------------------
 
 # tracking/
 # boxmot>=10.0.0            # BoT-SORT / ByteTrack
@@ -39,6 +31,3 @@ pytest-cov>=5.0.0           # Coverage reporting
 
 # night_detection/
 # scipy>=1.13.0             # Connected-component labelling
-
-# Optional: GPU acceleration (install separately per CUDA version)
-# torch>=2.2.0+cu121        # Via: pip install torch --index-url https://download.pytorch.org/whl/cu121

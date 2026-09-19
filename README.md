@@ -385,3 +385,16 @@ Downstream modules consume `list[Detection]` — they must not call `Detector.de
 - Coordinates are in **pixel space** relative to the input frame, not normalised [0, 1].
 - `confidence_threshold` is applied **twice** — once inside YOLO's predict (for speed) and once in `PostProcessor` (for correctness). Both use the same configured value.
 - The demo script requires a display for `--source 0` (webcam). Use `--no-display --output out.mp4` on headless servers.
+
+
+## Production Deployment Considerations ##
+
+## Model Weights:  
+The module currently defaults to yolo11n.pt trained on COCO RGB images. For real border surveillance deployment, swap this with weights fine-tuned on a thermal dataset (e.g. FLIR / KAIST) via ThermalDetectorConfig(model_path="...").
+
+# Radiometric Temperature: 
+Radiometric cameras output 14/16-bit raw Kelvin or calibrated sensor counts. The pipeline handles uint16/float32 scaling, but accurate temperature extraction requires device calibration constants.
+
+# Live Streaming: The standalone runner 
+demo/thermal_video_demo.py
+ handles live playback, HUD, and recording. For cloud/edge service deployment, a service wrapper (RTSP / FastAPI / gRPC / Docker) would complete the production stack."""

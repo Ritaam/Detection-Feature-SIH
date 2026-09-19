@@ -43,6 +43,7 @@ DEFAULT_THERMAL_CLASSES: frozenset[str] = frozenset(
         "motorcycle",
         "bus",
         "truck",
+        "animal",
     }
 )
 

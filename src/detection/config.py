@@ -39,6 +39,7 @@ DEFAULT_SUPPORTED_CLASSES: frozenset[str] = frozenset(
         "motorcycle",
         "bus",
         "truck",
+        "animal",
     }
 )
 

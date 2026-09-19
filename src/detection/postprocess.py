@@ -117,6 +117,14 @@ class PostProcessor:
 
             cls_name = class_names[cls_int]
 
+            # ── animal class override ──────────────────────────────────
+            animal_classes = {
+                "bird", "cat", "dog", "horse", "sheep", "cow", 
+                "elephant", "bear", "zebra", "giraffe"
+            }
+            if cls_name in animal_classes:
+                cls_name = "animal"
+
             # ── supported-class filter ──────────────────────────────────────
             if cls_name not in self._supported_classes:
                 logger.debug("Skipping unsupported class: %r", cls_name)
